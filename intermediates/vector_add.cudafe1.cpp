@@ -56470,33 +56470,35 @@ extern wostream wclog;
 static ios_base::Init __ioinit; 
 # 77
 }
-# 6 "src/vector_add.cu"
+# 20 "src/vector_add.cu"
 void vectorAdd(const float *a, const float *b, float *c) ;
 #if 0
-# 6
+# 20
 { 
-# 7
+# 21
 int i = (__device_builtin_variable_threadIdx.x) + ((__device_builtin_variable_blockDim.x) * (__device_builtin_variable_blockIdx.x)); 
-# 8
+# 22
 if (i < 256) { 
-# 9
-(c[i]) = ((a[i]) + (b[i])); 
-# 10
+# 24
+(c[i]) = (((a[i]) + (b[i])) * (1.0F)); 
+# 25
 }  
-# 11
+# 26
 } 
 #endif
-# 14 "src/vector_add.cu"
+# 31 "src/vector_add.cu"
 int main() { 
-# 15
-(((std::cout << ("Starting NVCC Autopsy Vector Add..."))) << (std::endl)); 
-# 17
+# 33
+(((std::cout << ("Starting NVCC Autopsy..."))) << (std::endl)); 
+# 34
+(((((std::cout << ("CPU Multiplier is: "))) << ((1.0F)))) << (std::endl)); 
+# 36
 float *d_a, *d_b, *d_c; 
-# 20
+# 39
 (__cudaPushCallConfiguration(1, 256)) ? (void)0 : vectorAdd(d_a, d_b, d_c); 
-# 22
+# 41
 return 0; 
-# 23
+# 42
 } 
 
 # 1 "vector_add.cudafe1.stub.c"

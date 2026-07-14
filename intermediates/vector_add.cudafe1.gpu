@@ -538,7 +538,7 @@ struct _ZN9__gnu_cxx11char_traitsIcEE {};
 #endif
 # 3641 "/export/apps/cuda/cuda12.4/bin/../targets/x86_64-linux/include/crt/device_functions.h"
 ___device__(extern  __no_sc__) unsigned __cudaPushCallConfiguration(struct dim3, struct dim3, size_t, struct CUstream_st *);
-# 6 "src/vector_add.cu"
+# 20 "src/vector_add.cu"
 __global__ __var_used__ extern void _Z9vectorAddPKfS0_Pf(const float *, const float *, float *);
 #include "common_functions.h"
 #if !defined(__CUDABE__)
@@ -727,27 +727,27 @@ __global__ __var_used__ extern void _Z9vectorAddPKfS0_Pf(const float *, const fl
 #endif
 #if !defined(__CUDABE__)
 #endif
-# 6 "src/vector_add.cu"
+# 20 "src/vector_add.cu"
 __global__ __var_used__ void _Z9vectorAddPKfS0_Pf(
-# 6 "src/vector_add.cu"
+# 20 "src/vector_add.cu"
 const float *a, 
-# 6 "src/vector_add.cu"
+# 20 "src/vector_add.cu"
 const float *b, 
-# 6 "src/vector_add.cu"
+# 20 "src/vector_add.cu"
 float *c){
-# 6 "src/vector_add.cu"
+# 20 "src/vector_add.cu"
 {
-# 7 "src/vector_add.cu"
- int __cuda_local_var_56449_9_non_const_i;
-# 7 "src/vector_add.cu"
-__cuda_local_var_56449_9_non_const_i = ((int)((threadIdx.x) + ((blockDim.x) * (blockIdx.x))));
-# 8 "src/vector_add.cu"
-if (__cuda_local_var_56449_9_non_const_i < 256)
-# 8 "src/vector_add.cu"
+# 21 "src/vector_add.cu"
+ int __cuda_local_var_56447_9_non_const_i;
+# 21 "src/vector_add.cu"
+__cuda_local_var_56447_9_non_const_i = ((int)((threadIdx.x) + ((blockDim.x) * (blockIdx.x))));
+# 22 "src/vector_add.cu"
+if (__cuda_local_var_56447_9_non_const_i < 256)
+# 22 "src/vector_add.cu"
 {
-# 9 "src/vector_add.cu"
-(c[__cuda_local_var_56449_9_non_const_i]) = ((a[__cuda_local_var_56449_9_non_const_i]) + (b[__cuda_local_var_56449_9_non_const_i]));
-# 10 "src/vector_add.cu"
+# 24 "src/vector_add.cu"
+(c[__cuda_local_var_56447_9_non_const_i]) = (((a[__cuda_local_var_56447_9_non_const_i]) + (b[__cuda_local_var_56447_9_non_const_i])) * (2.0F));
+# 25 "src/vector_add.cu"
 } 
-# 11 "src/vector_add.cu"
+# 26 "src/vector_add.cu"
 }}
