@@ -1,1 +1,1 @@
-nano /usr/local/cuda/include/cuda_runtime_api.h
+grep -n "__syncthreads" /export/apps/cuda/cuda12.4/include/crt/device_functions.h
