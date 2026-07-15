@@ -56455,13 +56455,14 @@ __attribute__((global)) void vectorAdd(const float *a, const float *b, float *c)
 
 
 
+
 int main() {
 
     std::cout << "Starting NVCC Autopsy..." << std::endl;
     std::cout << "CPU Multiplier is: " << 2.0f << std::endl;
 
     float *d_a, *d_b, *d_c;
-
+    cudaMalloc((void**)&d_a, 256 * sizeof(float));
 
     vectorAdd<<<1, 256>>>(d_a, d_b, d_c);
 

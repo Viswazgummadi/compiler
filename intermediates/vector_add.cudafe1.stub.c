@@ -18,7 +18,7 @@ void vectorAdd( const float *__cuda_0,const float *__cuda_1,float *__cuda_2)
 # 27 "src/vector_add.cu"
 }
 # 1 "intermediates/vector_add.cudafe1.stub.c"
-static void __nv_cudaEntityRegisterCallback( void **__T0) {  __nv_dummy_param_ref(__T0); __nv_save_fatbinhandle_for_managed_rt(__T0); __cudaRegisterEntry(__T0, ((void ( *)(const float *, const float *, float *))vectorAdd), _Z9vectorAddPKfS0_Pf, (-1)); }
+static void __nv_cudaEntityRegisterCallback( void **__T2) {  __nv_dummy_param_ref(__T2); __nv_save_fatbinhandle_for_managed_rt(__T2); __cudaRegisterEntry(__T2, ((void ( *)(const float *, const float *, float *))vectorAdd), _Z9vectorAddPKfS0_Pf, (-1)); }
 static void __sti____cudaRegisterAll(void) {  __cudaRegisterBinary(__nv_cudaEntityRegisterCallback);  }
 
 #pragma GCC diagnostic pop

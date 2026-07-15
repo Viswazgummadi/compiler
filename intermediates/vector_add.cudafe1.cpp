@@ -56488,19 +56488,21 @@ if (i < 256) {
 # 27
 } 
 #endif
-# 32 "src/vector_add.cu"
+# 33 "src/vector_add.cu"
 int main() { 
-# 34
-(((std::cout << ("Starting NVCC Autopsy..."))) << (std::endl)); 
 # 35
+(((std::cout << ("Starting NVCC Autopsy..."))) << (std::endl)); 
+# 36
 (((((std::cout << ("CPU Multiplier is: "))) << ((1.0F)))) << (std::endl)); 
-# 37
+# 38
 float *d_a, *d_b, *d_c; 
-# 40
+# 39
+cudaMalloc((void **)(&d_a), (256) * sizeof(float)); 
+# 41
 (__cudaPushCallConfiguration(1, 256)) ? (void)0 : vectorAdd(d_a, d_b, d_c); 
-# 42
-return 0; 
 # 43
+return 0; 
+# 44
 } 
 
 # 1 "vector_add.cudafe1.stub.c"
