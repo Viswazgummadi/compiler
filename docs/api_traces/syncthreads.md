@@ -34,3 +34,32 @@ graph TD
     
     E --> F
     F --> G
+```
+
+## 🔀 2. The Instruction Selection Mapping (TableGen)
+
+How does the compiler backend know to turn `@llvm.nvvm.barrier0()` into `bar.sync 0;`? 
+
+While NVIDIA's `cicc` binary is closed-source, it is built on the open-source **LLVM** framework. By looking at LLVM's `NVPTXIntrinsics.td` (TableGen) file, we can see the exact hardcoded dictionary mapping created by NVIDIA engineers.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant IR as NVVM IR (cicc)
+    participant TD as NVPTXIntrinsics.td (Dictionary)
+    participant PTX as vector_add.ptx
+
+    IR->>TD: Input: '@llvm.nvvm.barrier0()'
+    
+    Note over TD: def INT_NVVM_BARRIER0 : NVPTXInst<br>[(int_nvvm_barrier0)] <br> Output String: "bar.sync \t0;"
+    
+    TD-->>IR: Match Found! Apply String Injection.
+    IR->>PTX: Emit raw instruction: 'bar.sync 0;'
+```
+
+## 📌 Summary of Execution
+1. The **Header** defines the API as a `__device_builtin__`.
+2. The **Compiler Frontend** bypasses standard C++ linking and converts it to an LLVM intrinsic.
+3. The **Compiler Backend** matches the intrinsic to a hardcoded string using a TableGen dictionary.
+4. The **PTX Output** contains pure virtual hardware assembly, with zero function call overhead.
+```
