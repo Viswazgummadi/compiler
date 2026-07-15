@@ -1,5 +1,13 @@
+GPU:
+
 grep -n "__syncthreads" /export/apps/cuda/cuda12.4/include/crt/device_functions.h
 grep -E "extern.*cudaMalloc\(" /export/apps/cuda/cuda12.4/include/cuda_runtime_api.h
 tail -n 30 intermediates/vector_add.cudafe1.cpp
 //then open stub
 //cicc detects and translates directly
+
+
+
+CPU:
+
+

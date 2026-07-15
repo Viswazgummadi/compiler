@@ -1,53 +1,64 @@
 # Makefile
 
-# The CUDA Compiler Driver
+# Compilers
 NVCC = nvcc
+CLANG = clang++
 
-# Architecture target (Adjust if needed, sm_80 is Ampere / RTX 30-series)
-# Old:
-ARCH = -arch=sm_80
+# Architectures (Adjust if needed, sm_80 is Ampere)
+NVCC_ARCH = -arch=sm_80
+CLANG_ARCH = --cuda-gpu-arch=sm_80
 
-# New: The Professional Deployment Flags
-# 1. Compile SASS (Machine Code) for Volta (sm_70)
-# 2. Compile SASS (Machine Code) for Ampere (sm_80)
-# 3. Embed PTX (Virtual Assembly) for compute_80 (Forward compatibility for future GPUs)
-#ARCH = \
- # -gencode arch=compute_70,code=sm_70 \
-  #-gencode arch=compute_80,code=sm_80 \
-  #-gencode arch=compute_80,code=compute_80
-
-
-# Source and output
+# Source and outputs
 SRC = src/vector_add.cu
-EXE = vector_add
+EXE_NVCC = bin/vector_add_nvcc
+EXE_LLVM = bin/vector_add_llvm
 
-# Targets
-.PHONY: all clean trace keep
+.PHONY: all clean trace_nvcc keep_nvcc trace_llvm keep_llvm
 
-# Standard build
-all:
-	$(NVCC) $(ARCH) $(SRC) -o $(EXE)
-	@echo "✅ Standard build complete."
+all: all_nvcc all_llvm
 
-# THE TRACE: Runs a dry-run and pipes the shell commands into a log file
-trace:
-	@mkdir -p trace_logs
-	@echo "🔍 Running nvcc in dry-run mode..."
-	# Note: nvcc --dryrun prints to stderr (>&2), so we redirect 2> to our log file
-	$(NVCC) $(ARCH) --dryrun $(SRC) 2> trace_logs/dryrun_log.txt
-	@echo "✅ Trace saved to trace_logs/dryrun_log.txt"
+# ==========================================
+# NVCC TARGETS
+# ==========================================
+all_nvcc:
+	@mkdir -p bin
+	$(NVCC) $(NVCC_ARCH) $(SRC) -o $(EXE_NVCC)
+	@echo "✅ NVCC build complete."
 
-# THE KEEP: Forces nvcc to keep every single intermediate file it generates
-keep:
-	@mkdir -p intermediates
-	@echo "💾 Running nvcc and preserving all intermediate files..."
-	$(NVCC) $(ARCH) --keep --keep-dir intermediates $(SRC) -o $(EXE)
-	@echo "✅ Intermediates saved in intermediates/ directory."
+trace_nvcc:
+	@mkdir -p trace_logs/nvcc
+	$(NVCC) $(NVCC_ARCH) --dryrun $(SRC) 2> trace_logs/nvcc/dryrun_log.txt
+	@echo "✅ NVCC Trace saved to trace_logs/nvcc/dryrun_log.txt"
 
-# THE PROFILER: Passing flags to the PTX assembler
-inspect:
-	@echo "🔬 Compiling and inspecting GPU hardware usage..."
-	$(NVCC) $(ARCH) src/vector_add.cu -Xptxas -v -o $(EXE)
+keep_nvcc:
+	@mkdir -p intermediates/nvcc bin
+	$(NVCC) $(NVCC_ARCH) --keep --keep-dir intermediates/nvcc $(SRC) -o $(EXE_NVCC)
+	@echo "✅ NVCC Intermediates saved in intermediates/nvcc/"
 
+# ==========================================
+# LLVM (CLANG) TARGETS
+# ==========================================
+all_llvm:
+	@mkdir -p bin
+	$(CLANG) $(CLANG_ARCH) $(SRC) -o $(EXE_LLVM)
+	@echo "✅ LLVM build complete."
+
+trace_llvm:
+	@mkdir -p trace_logs/llvm
+	$(CLANG) $(CLANG_ARCH) -### $(SRC) > trace_logs/llvm/dryrun_log.txt 2>&1
+	@echo "✅ LLVM Trace saved to trace_logs/llvm/dryrun_log.txt"
+
+keep_llvm:
+	@mkdir -p intermediates/llvm bin
+	@echo "💾 Compiling with Clang and saving temps..."
+	$(CLANG) $(CLANG_ARCH) -save-temps -o $(EXE_LLVM) $(SRC)
+	@echo "🚚 Moving intermediate files to intermediates/llvm/..."
+	@mv vector_add*.* intermediates/llvm/ 2>/dev/null || true
+	@echo "✅ LLVM Intermediates saved in intermediates/llvm/"
+
+# ==========================================
+# CLEAN
+# ==========================================
 clean:
-	rm -rf intermediates/* trace_logs/* $(EXE)
+	rm -rf intermediates/nvcc/* intermediates/llvm/* trace_logs/nvcc/* trace_logs/llvm/* bin/*
+	@echo "🧹 Workspace cleaned."
