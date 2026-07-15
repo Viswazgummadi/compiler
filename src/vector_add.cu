@@ -19,6 +19,7 @@
 // ---------------------------------------------------------
 __global__ void vectorAdd(const float *a, const float *b, float *c) {
     int i = threadIdx.x + blockDim.x * blockIdx.x;
+    __syncthreads();
     if (i < VECTOR_SIZE) {
         // We use the macro here. Which one will it be?
         c[i] = (a[i] + b[i]) * MULTIPLIER;

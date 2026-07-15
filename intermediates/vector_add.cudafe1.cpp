@@ -56478,27 +56478,29 @@ void vectorAdd(const float *a, const float *b, float *c) ;
 # 21
 int i = (__device_builtin_variable_threadIdx.x) + ((__device_builtin_variable_blockDim.x) * (__device_builtin_variable_blockIdx.x)); 
 # 22
+__syncthreads(); 
+# 23
 if (i < 256) { 
-# 24
-(c[i]) = (((a[i]) + (b[i])) * (1.0F)); 
 # 25
-}  
+(c[i]) = (((a[i]) + (b[i])) * (1.0F)); 
 # 26
+}  
+# 27
 } 
 #endif
-# 31 "src/vector_add.cu"
+# 32 "src/vector_add.cu"
 int main() { 
-# 33
-(((std::cout << ("Starting NVCC Autopsy..."))) << (std::endl)); 
 # 34
+(((std::cout << ("Starting NVCC Autopsy..."))) << (std::endl)); 
+# 35
 (((((std::cout << ("CPU Multiplier is: "))) << ((1.0F)))) << (std::endl)); 
-# 36
+# 37
 float *d_a, *d_b, *d_c; 
-# 39
+# 40
 (__cudaPushCallConfiguration(1, 256)) ? (void)0 : vectorAdd(d_a, d_b, d_c); 
-# 41
-return 0; 
 # 42
+return 0; 
+# 43
 } 
 
 # 1 "vector_add.cudafe1.stub.c"

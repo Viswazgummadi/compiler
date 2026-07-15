@@ -31,6 +31,7 @@
 	mov.u32 	%r3, %ctaid.x;
 	mov.u32 	%r4, %ntid.x;
 	mad.lo.s32 	%r1, %r4, %r3, %r2;
+	bar.sync 	0;
 	setp.gt.s32 	%p1, %r1, 255;
 	@%p1 bra 	$L__BB0_2;
 

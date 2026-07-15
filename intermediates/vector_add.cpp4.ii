@@ -54563,6 +54563,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
 # 20 "src/vector_add.cu"
 __attribute__((global)) void vectorAdd(const float *a, const float *b, float *c) {
     int i = threadIdx.x + blockDim.x * blockIdx.x;
+    __syncthreads();
     if (i < 256) {
 
         c[i] = (a[i] + b[i]) * 1.0f;
