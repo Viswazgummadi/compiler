@@ -76,4 +76,3 @@ This project categorizes the specific traces of major CUDA API functions. Read t
    *How the compiler surgically removes illegal C++ syntax, builds the `.fatbin` byte array, and constructs "Glue Stubs" to talk to the Linux Kernel.*
 
 ---
-```
